@@ -31,7 +31,7 @@ public class JpaMain {
                     필요한 데이터만 DB에서 불러오려면 결국 검색 조건이 포함된 SQL이 필요.
                     한마디로 객체지향 SQL
              */
-            List<Member> result = em.createQuery("select m from Member as m", Member.class)
+/*            List<Member> result = em.createQuery("select m from Member as m", Member.class)
                     .setFirstResult(1)  // first부터
                     .setMaxResults(10)  // max개만큼 가져와
                     .getResultList();
@@ -39,7 +39,7 @@ public class JpaMain {
             for (Member member : result) {
                 System.out.println("member.name = " + member.getName());
 
-            }
+            }*/
             /*
                 영속성 컨텍스트 : 어플리케이션 - @entityManager@ - DB 사이 : entityManager를 통해 영속성 컨텍스트에 접근(영속성 컨텍스트는 논리적 모델 실제 존재하진 않음)
                 영속상태 = 1차캐시
@@ -87,27 +87,30 @@ public class JpaMain {
 
              */
             // 객체를 생성한 상태 (비영속)
-            Member member = new Member(); // entity
+//            Member member = new Member(); // entity
+
+            User user = new User();
+            user.setUsername("name");
+
+            em.persist(user);
             // 1차캐시
-            member.setId(100L);
-            member.setName("HeeloJPA2");
+//            member.setId(100L);
+//            member.setName("HeeloJPA2");
 
             // 영속상태 - entitymanager를 통해 영속성 컨텍스트(persistence context)에서 관리를 시킴 그말인즉 쿼리를 여기서 날리지 않는다.
-            em.persist(member);
+//            em.persist(member);
             // 조회시 1차캐시에서 조회
-            em.find(Member.class, 100L);
+//            em.find(Member.class, 100L);
             // 1차캐시에서 조회 -> 없으면 DB에서 조회 > 1차캐시에 저장 -> entity 반환
-            em.find(Member.class, 200L);
+//            em.find(Member.class, 200L);
 
             // 영속성 컨텍스트에서 분리 (준영속 상태)
-            em.detach(member);
+//            em.detach(member);
             // DB에서 해당 데이터를 지운다
-            em.remove(member);
+//            em.remove(member);
 
             // 쿼리가 실제 날아가는 때
             tx.commit();
-
-
 
         } catch (Exception e) {
             tx.rollback();
